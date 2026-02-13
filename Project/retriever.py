@@ -20,13 +20,23 @@ except ImportError:
 from langchain_chroma import Chroma  # type: ignore
 from langchain_huggingface import HuggingFaceEmbeddings  # type: ignore
 
+# Cache the embeddings instance so the model is only loaded once per process
+# rather than on every call to get_vectorstore().
+_embeddings = None
+
+
+def _get_embeddings():
+    global _embeddings
+    if _embeddings is None:
+        _embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    return _embeddings
+
 
 def get_vectorstore():
     """Return a Chroma vectorstore handle backed by the on-disk collection."""
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vectorstore = Chroma(
         persist_directory=str(CHROMA_DIR),
-        embedding_function=embeddings,
+        embedding_function=_get_embeddings(),
         collection_name=COLLECTION_NAME,
     )
     return vectorstore

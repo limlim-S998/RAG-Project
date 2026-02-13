@@ -138,7 +138,8 @@ def ingest_pdfs(reset_collection: bool = True):
         try:
             vectorstore.delete_collection()
             print(f"Cleared existing collection '{COLLECTION_NAME}' before ingest")
-        except Exception:
+        except ValueError:
+            # Collection doesn't exist yet — nothing to delete.
             pass
         # Re-create the vectorstore handle after deleting the collection,
         # since the old handle points to a now-deleted collection.
