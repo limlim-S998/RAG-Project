@@ -16,8 +16,8 @@ Typical usage:
     python Project/ingest.py
 """
 
-from collections import defaultdict
 import hashlib
+from collections import defaultdict
 
 try:
     from .config import (
@@ -38,8 +38,8 @@ except ImportError:
         PDF_DIR,
     )
 
-from langchain_community.document_loaders import PyPDFLoader  # type: ignore
 from langchain_chroma import Chroma  # type: ignore
+from langchain_community.document_loaders import PyPDFLoader  # type: ignore
 from langchain_huggingface import HuggingFaceEmbeddings  # type: ignore
 from langchain_text_splitters import RecursiveCharacterTextSplitter  # type: ignore
 
@@ -109,14 +109,14 @@ def ingest_pdfs(reset_collection: bool = True):
     # resulting chunk would exceed CHUNK_SIZE.
     separators = [
         "\n\n",  # paragraph breaks
-        "\n",    # line breaks
-        ". ",    # sentence endings
+        "\n",  # line breaks
+        ". ",  # sentence endings
         "? ",
         "! ",
-        "; ",    # clause boundaries
+        "; ",  # clause boundaries
         ", ",
-        " ",     # word boundaries
-        "",      # character-level (last resort)
+        " ",  # word boundaries
+        "",  # character-level (last resort)
     ]
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
