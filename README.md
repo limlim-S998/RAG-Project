@@ -1,3 +1,5 @@
+test change
+
 # RAG_Lang
 
 A local retrieval-augmented generation (RAG) pipeline for querying PDF documents. Built on LangChain and LangGraph, it runs entirely on your machine — no API keys or cloud services required.
@@ -5,7 +7,6 @@ A local retrieval-augmented generation (RAG) pipeline for querying PDF documents
 Drop PDFs into a folder, ingest them into a ChromaDB vector store, and ask questions through a multi-step LangGraph pipeline that routes, rewrites, retrieves, and generates answers using Ollama.
 
 ## How It Works
-
 The pipeline is structured as a LangGraph state graph with four sequential nodes:
 
 ```
