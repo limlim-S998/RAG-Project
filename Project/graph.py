@@ -35,6 +35,7 @@ from langgraph.graph import END, START, StateGraph  # type: ignore
 # ── State flowing through the graph ───────────────────
 class GraphState(TypedDict):
     """Typed dictionary that every node reads from and writes to."""
+
     question: str
     documents: list[Document]
     answer: str
@@ -42,6 +43,7 @@ class GraphState(TypedDict):
 
 
 # ── Nodes ─────────────────────────────────────────────
+
 
 def route(state: GraphState) -> dict:
     """
@@ -123,6 +125,7 @@ def generate(state: GraphState) -> dict:
 
 
 # ── Build the graph ───────────────────────────────────
+
 
 def build_graph():
     """
