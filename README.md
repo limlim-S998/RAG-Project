@@ -1,5 +1,3 @@
-test change
-
 # RAG_Lang
 
 A local retrieval-augmented generation (RAG) pipeline for querying PDF documents. Built on LangChain and LangGraph, it runs entirely on your machine — no API keys or cloud services required.
