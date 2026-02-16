@@ -15,6 +15,7 @@ Route --> Rewrite --> Retrieve --> Generate
 2. **Rewrite** — Sends the question through the LLM to make it more specific and better suited for semantic search, while preserving the original intent.
 3. **Retrieve** — Queries ChromaDB for the top-k most relevant chunks using HuggingFace sentence embeddings, optionally filtered by the metadata from the routing step.
 4. **Generate** — Feeds the retrieved context and original question to the LLM, which produces a grounded answer. If the context doesn't contain the answer, the model says so.
+5. **Grade** — Assesses the accuracy of the generated response and decides whether it adequately answers the question. Assigns grade pass or fail leading to up to three retries.
 
 ## Project Structure
 
