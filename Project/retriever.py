@@ -52,6 +52,7 @@ def get_retriever(metadata_filter: dict | None = None):
             considered during similarity search.  This is how the graph's
             routing node narrows results to a single document.
     """
+
     vectorstore = get_vectorstore()
     search_kwargs = {"k": TOP_K}
     if metadata_filter:
@@ -65,6 +66,7 @@ def get_available_titles() -> list[str]:
     chunk metadata.  The routing node uses this list to check whether the
     user's question mentions a known document title.
     """
+
     vectorstore = get_vectorstore()
     collection = vectorstore._collection
     all_meta = collection.get(include=["metadatas"])["metadatas"] or []

@@ -136,10 +136,14 @@ def build_graph():
     """
     graph = StateGraph(GraphState)
 
-    graph.add_node("route", route)
-    graph.add_node("rewrite", rewrite)
-    graph.add_node("retrieve", retrieve)
-    graph.add_node("generate", generate)
+    graph.add_node(
+        "route", route
+    )  # checks question for known titles and sets metadata_filter
+    graph.add_node(
+        "rewrite", rewrite
+    )  # gives question and metadata_filter (possibly updated)
+    graph.add_node("retrieve", retrieve)  # gives documents
+    graph.add_node("generate", generate)  # gives answer
 
     graph.add_edge(START, "route")
     graph.add_edge("route", "rewrite")
