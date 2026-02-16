@@ -37,6 +37,9 @@ from langgraph.graph import END, START, StateGraph  # type: ignore
 
 MAX_RETRIES = 3
 
+# Shared LLM instance — avoids recreating the client on every node call.
+llm = ChatOllama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
+
 # ── State flowing through the graph ───────────────────
 
 
@@ -96,7 +99,6 @@ def rewrite(state: GraphState) -> dict:
             ("human", "Question: {question}\n\nRewrite:"),
         ]
     )
-    llm = ChatOllama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
     chain = prompt | llm
     rewritten = chain.invoke({"question": source_question})
     return {"question": rewritten.content}
@@ -132,7 +134,6 @@ def generate(state: GraphState) -> dict:
         ]
     )
 
-    llm = ChatOllama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
     chain = prompt | llm
     response = chain.invoke({"context": context, "question": state["question"]})
     return {"answer": response.content}
@@ -170,7 +171,6 @@ def grade(state: GraphState) -> dict:
 
     context = "\n\n".join(doc.page_content for doc in state["documents"])
 
-    llm = ChatOllama(model=OLLAMA_MODEL, base_url=OLLAMA_BASE_URL)
     chain = prompt | llm
     verdict = chain.invoke(
         {
