@@ -1,0 +1,13 @@
+# Core RAG pipeline
+langchain-community>=0.4,<1
+langchain-chroma>=0.2,<1
+langchain-huggingface>=1.0,<2
+langchain-ollama>=1.0,<2
+langchain-text-splitters>=1.0,<2
+langgraph>=1.0,<2
+
+# PDF parsing (used by langchain PyPDFLoader)
+pypdf>=5.0,<7
+
+# Sentence embeddings (used by HuggingFaceEmbeddings)
+sentence-transformers>=4.0,<6
