@@ -12,27 +12,25 @@ pipeline.  It exposes three things:
                                 a query targets a specific document
 """
 
-try:
-    from .config import CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL, TOP_K
-except ImportError:
-    from config import CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL, TOP_K
+from config import CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL, TOP_K
 
 from langchain_chroma import Chroma  # type: ignore
+from langchain_core.vectorstores import VectorStoreRetriever  # type: ignore
 from langchain_huggingface import HuggingFaceEmbeddings  # type: ignore
 
 # Cache the embeddings instance so the model is only loaded once per process
 # rather than on every call to get_vectorstore().
-_embeddings = None
+_embeddings: HuggingFaceEmbeddings | None = None
 
 
-def _get_embeddings():
+def _get_embeddings() -> HuggingFaceEmbeddings:
     global _embeddings
     if _embeddings is None:
         _embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     return _embeddings
 
 
-def get_vectorstore():
+def get_vectorstore() -> Chroma:
     """Return a Chroma vectorstore handle backed by the on-disk collection."""
     vectorstore = Chroma(
         persist_directory=str(CHROMA_DIR),
@@ -42,7 +40,7 @@ def get_vectorstore():
     return vectorstore
 
 
-def get_retriever(metadata_filter: dict | None = None):
+def get_retriever(metadata_filter: dict | None = None) -> VectorStoreRetriever:
     """
     Build a LangChain retriever that returns the top-k most similar chunks.
 

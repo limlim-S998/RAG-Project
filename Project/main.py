@@ -12,24 +12,20 @@ Examples:
     python Project/main.py chat
 """
 
-import sys
+import argparse
 
-try:
-    from .graph import build_graph
-    from .ingest import ingest_pdfs
-except ImportError:
-    from graph import build_graph
-    from ingest import ingest_pdfs
+from graph import build_graph
+from ingest import ingest_pdfs
 
 
-def ask(question: str):
+def ask(question: str) -> None:
     """Run a single question through the graph and print the result."""
     app = build_graph()
     result = app.invoke({"question": question})
     print(f"\nAnswer:\n{result['answer']}")
 
 
-def chat():
+def chat() -> None:
     """
     Interactive chat loop.
 
@@ -50,28 +46,25 @@ def chat():
         print(f"\nAssistant: {result['answer']}")
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage:")
-        print("  python main.py ingest        — Process PDFs into the vector store")
-        print("  python main.py ask <question> — Ask a single question")
-        print("  python main.py chat           — Interactive chat loop")
-        sys.exit(1)
+def main() -> None:
+    parser = argparse.ArgumentParser(description="RAG pipeline CLI")
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    command = sys.argv[1]
+    subparsers.add_parser("ingest", help="Process PDFs into the vector store")
 
-    if command == "ingest":
+    ask_parser = subparsers.add_parser("ask", help="Ask a single question")
+    ask_parser.add_argument("question", nargs="+", help="The question to ask")
+
+    subparsers.add_parser("chat", help="Interactive chat loop")
+
+    args = parser.parse_args()
+
+    if args.command == "ingest":
         ingest_pdfs()
-    elif command == "ask":
-        if len(sys.argv) < 3:
-            print('Provide a question: python main.py ask "your question here"')
-            sys.exit(1)
-        ask(" ".join(sys.argv[2:]))
-    elif command == "chat":
+    elif args.command == "ask":
+        ask(" ".join(args.question))
+    elif args.command == "chat":
         chat()
-    else:
-        print(f"Unknown command: {command}")
-        sys.exit(1)
 
 
 if __name__ == "__main__":

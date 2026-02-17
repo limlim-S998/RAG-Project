@@ -23,17 +23,14 @@ State fields:
 
 from typing import TypedDict
 
-try:
-    from .config import OLLAMA_BASE_URL, OLLAMA_MODEL
-    from .retriever import get_available_titles, get_retriever
-except ImportError:
-    from config import OLLAMA_BASE_URL, OLLAMA_MODEL
-    from retriever import get_available_titles, get_retriever
+from config import OLLAMA_BASE_URL, OLLAMA_MODEL
+from retriever import get_available_titles, get_retriever
 
 from langchain_core.documents import Document  # type: ignore
 from langchain_core.prompts import ChatPromptTemplate  # type: ignore
 from langchain_ollama import ChatOllama  # type: ignore
 from langgraph.graph import END, START, StateGraph  # type: ignore
+from langgraph.graph.state import CompiledStateGraph  # type: ignore
 
 MAX_RETRIES = 3
 
@@ -211,7 +208,7 @@ def decide_after_grade(state: GraphState) -> str:
 # ── Build the graph ───────────────────────────────────
 
 
-def build_graph():
+def build_graph() -> CompiledStateGraph:
     """
     Assemble and compile the LangGraph state graph.
 
